@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Jasmine Spec Runner</title>
+
+  <link rel="shortcut icon" type="image/png" href="./TestFramework/jasmine-1.2.0/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="./TestFramework/jasmine-1.2.0/jasmine.css">
+  <script type="text/javascript" src="./TestFramework/jasmine-1.2.0/jasmine.js"></script>
+  <script type="text/javascript" src="./TestFramework/jasmine-1.2.0/jasmine-html.js"></script>
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="../lib/Extensions.js"></script>
+  <script type="text/javascript" src="../lib/genericParameter.js"></script>
+  <script type="text/javascript" src="../lib/methodExpectation.js"></script>
+  <script type="text/javascript" src="../lib/mockus.js"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="./lib/genericParameterTest.js"></script>
+  <script type="text/javascript" src="./lib/methodExpectationTest.js"></script>
+  <script type="text/javascript" src="./lib/mockusTest.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>
