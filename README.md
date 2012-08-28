@@ -16,7 +16,7 @@ How it works?
   *ToBeCalled*  
   **myMock.Expect.MyMethod.ToBeCalled();**  
   -or-  
-  *myMock.Expect.MyMethod.ToBeCalled(5);**  
+  **myMock.Expect.MyMethod.ToBeCalled(5);**  
   This expectation will setup a listener that will be aware of the times that the method of the expectation is called.
   If no parameter is sent, it will be check that is called 1 time. 
   
@@ -40,9 +40,10 @@ How it works?
   **myMock.VerifyAll();**
 
 - Errors! What happens when expectations are not accomplished? Mockus will throw an expection when an expectation is not accomplished.
-Exceptions contain the whole information to allow you solve the problem. An example:
-*Mock for component IEventManager: method AddEvent -> Times to be called not succeed. Expected 3 but was 2*
-*Mock for component IEventManager: method AddEvent -> Invalid argument value. Argument 2 expected to be keydown but was keyup*
+Exceptions contain the whole information to allow you solve the problem. An example:  
+  
+*Mock for component IEventManager: method AddEvent -> Times to be called not succeed. Expected 3 but was 2*  
+*Mock for component IEventManager: method AddEvent -> Invalid argument value. Argument 2 expected to be keydown but was keyup*  
 *Mock for component IEventManager: method AddEvent -> Invalid argument type. Argument 2 expected to be of type function but was string*
 
 *LIMITATIONS*
