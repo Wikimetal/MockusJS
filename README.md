@@ -7,28 +7,28 @@ How it works?
 - First you have to create the mock for the type you desire.
  Remember that Mockus will only mock types, it will not work if you try yo mock an instance of any type.
 
-  **function MyType(){};**
-  **MyType.prototype.MyMethod=function(){};**
-  **var myMock=Mockus.Mock(MyType);**
+  **function MyType(){};**  
+  **MyType.prototype.MyMethod=function(){};**  
+  **var myMock=Mockus.Mock(MyType);**  
   
 - Once we've created the mock, the we can perform expectations over it. We've got different expectation types:
 
-  *ToBeCalled*
-  **myMock.Expect.MyMethod.ToBeCalled();**
-  -or-
-  **myMock.Expect.MyMethod.ToBeCalled(5);**
+  *ToBeCalled*  
+  **myMock.Expect.MyMethod.ToBeCalled();**  
+  -or-  
+  *myMock.Expect.MyMethod.ToBeCalled(5);**  
   This expectation will setup a listener that will be aware of the times that the method of the expectation is called.
   If no parameter is sent, it will be check that is called 1 time. 
   
-  *WithParams*
-  **myMock.Expect.MyMethod.WithParams("param1","param2"...)**
+  *WithParams*  
+  **myMock.Expect.MyMethod.WithParams("param1","param2"...)**  
   This expectation will setup a listener that will be aware of the parameters that are sent to the method of the expectation.
   Every expectation will be aware of a single call, so, for the first expectation we'll check the parameters of the first call, for the second expectation, the second call, and so on.
   
   When you want to setup a WithParams expectation but you are not sure about the parameters' values, you can setup a generic parameter, that will check only the type and not the value.
   You've got some options to do so:
-  - It.IsAny(MyType)
-  **myMock.Expect.MyMethod.WithParams(It.IsAny(MyType));**
+  - It.IsAny(MyType)  
+  **myMock.Expect.MyMethod.WithParams(It.IsAny(MyType));**  
   This will check that the first parameter that will be passed to our method is an instance of MyType, but it will not check that instance itself.
   
   - It.IsAnyFunction()
