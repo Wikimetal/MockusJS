@@ -37,7 +37,7 @@ How it works?
   - It.IsAnyNumber()
   
   *Returns*  
-  **myMock.Expects.MyMethod.Returns("returnValue");**
+  **myMock.Expects.MyMethod.Returns("returnValue");**  
   This expectation will setup a listener that will return the desired value when mocked method is called.  
   Expectations are executed in order, so if you want to perform some "Returns" expectations over a method, keep in mind that:  
   
