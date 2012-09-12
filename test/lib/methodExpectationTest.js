@@ -176,6 +176,32 @@ describe("Method Expectation Tests", function () {
             expect(function(){methodExpectation.VerificationPointers[0]()}).toThrow("Invalid argument type. Argument 3 expected to be of type string but was TestType");
         });
     });
+    describe("public Returns",function(){
+        it("should return expected value when notified",function(){
+            var returnValue="returnValue";
+            methodExpectation.Returns(returnValue);
+            expect(methodExpectation.NotificationPointers.length).toEqual(1);
+            expect(methodExpectation.Notify()).toEqual(returnValue);
+        });
+        it("should return expected value when notified more than one time",function(){
+            var returnValue1="returnValue1";
+            var returnValue2="returnValue2";
+            methodExpectation.Returns(returnValue1);
+            methodExpectation.Returns(returnValue2);
+            expect(methodExpectation.NotificationPointers.length).toEqual(2);
+            expect(methodExpectation.Notify()).toEqual(returnValue1);
+            expect(methodExpectation.Notify()).toEqual(returnValue2);
+        });
+        it("should throw exception when expectation has not been executed",function(){
+            var returnValue1="returnValue1";
+            var returnValue2="returnValue2";
+            methodExpectation.Returns(returnValue1);
+            methodExpectation.Returns(returnValue2);
+            expect(methodExpectation.NotificationPointers.length).toEqual(2);
+            expect(methodExpectation.Notify()).toEqual(returnValue1);
+            expect(function(){methodExpectation.Verify()}).toThrow("Returns expectation not accomplished. Expected to return returnValue2");
+        });
+    });
     describe("public Notify",function(){
         it("should execute all the defined notification pointers with defined args",function(){
           var expectedArgs="expectedArgs";
@@ -203,6 +229,68 @@ describe("Method Expectation Tests", function () {
           });
           methodExpectation.Verify();
           expect(verifiedPointers).toEqual(2);
+        });
+    });
+    describe("integration tests",function(){
+        it("should verify all setups in order. Testing expectation 1...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").Returns(10);
+          methodExpectation.Notify();
+          expect(function(){methodExpectation.Verify()}).toThrow("Times to be called not succeed. Expected 2 but was 1");
+        });
+        it("should verify all setups in order. Testing expectation 2.1...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(10);
+          methodExpectation.Notify();
+          methodExpectation.Notify();
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid arguments length. Expected 2 but was 0");
+        });
+        it("should verify all setups in order. Testing expectation 2.2...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(10);
+          methodExpectation.Notify(["param2","param1"]);
+          methodExpectation.Notify();
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid argument value. Argument 1 expected to be param1 but was param2");
+        });
+        it("should verify all setups in order. Testing expectation 2.3...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(10);
+          methodExpectation.Notify(["param2",0]);
+          methodExpectation.Notify();
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid argument type. Argument 2 expected to be of type string but was number");
+        });
+        it("should verify all setups in order. Testing expectation 2.3...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(10);
+          methodExpectation.Notify(["param1","param2"]);
+          methodExpectation.Notify();
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid arguments length. Expected 2 but was 0");
+        });
+        it("should verify all setups in order. Testing expectation 2.3...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(10);
+          methodExpectation.Notify(["param1","param2"]);
+          methodExpectation.Notify(["param4","param3"]);
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid argument value. Argument 1 expected to be param3 but was param4");
+        });
+        it("should verify all setups in order. Testing expectation 2.4...",function(){
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(10);
+          methodExpectation.Notify(["param1","param2"]);
+          methodExpectation.Notify(["param3",0]);
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid argument type. Argument 2 expected to be of type string but was number");
+        });
+        it("should verify all setups in order. Testing expectation 3.1...",function(){
+          var returnValue1="returnValue1";
+          var returnValue2="returnValue2"; 
+          methodExpectation.ToBeCalled(2).WithParams("param1","param2").WithParams("param3","param4").Returns(returnValue1).Returns(returnValue2);
+          expect(methodExpectation.Notify(["param1","param2"])).toEqual(returnValue1);
+          expect(methodExpectation.Notify(["param3","param4"])).toEqual(returnValue2);
+          methodExpectation.Verify();
+        });
+        //This method tests the same functionality as the previous one but expectations have been divided in order to keep code more readable
+        it("should verify all setups in order. Testing expectation 3.2...",function(){
+          var returnValue1="returnValue1";
+          var returnValue2="returnValue2"; 
+          methodExpectation.ToBeCalled(2);
+          methodExpectation.WithParams("param1","param2").Returns(returnValue1);
+          methodExpectation.WithParams("param3","param4").Returns(returnValue2);
+          expect(methodExpectation.Notify(["param1","param2"])).toEqual(returnValue1);
+          expect(methodExpectation.Notify(["param3","param4"])).toEqual(returnValue2);
+          methodExpectation.Verify();
         });
     });
 });

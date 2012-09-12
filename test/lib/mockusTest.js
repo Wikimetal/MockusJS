@@ -5,7 +5,7 @@ describe("MockusJS Tests", function () {
     describe("static Mock: ", function () {
         it("should return a mock for the specified type", function () {
            var mock=Mockus.Mock(TestType);
-           expect(mock.Expect).toBeDefined();
+           expect(mock.Expects).toBeDefined();
         });
         it("should override methods' implementation to set notifiers", function () {
             expect(new TestType().TestMethod.toString()).toEqual("function (){}");
@@ -23,14 +23,14 @@ describe("MockusJS Tests", function () {
         it("should override methods' implementation to set verifiers", function () {
             expect(new TestType().TestMethod.toString()).toEqual("function (){}");
             var mock=Mockus.Mock(TestType);
-            expect(mock.Expect.TestMethod.toString()).toNotEqual("function (){}");
+            expect(mock.Expects.TestMethod.toString()).toNotEqual("function (){}");
         });
         it("should verify all methods' expectations when VerifyAll is called", function () {
             var verificationPointerCalled=false;
             var mock=Mockus.Mock(TestType);
-            mock.Expect.TestMethod.ToBeCalled();
-            expect(mock.Expect.TestMethod.VerificationPointers.length).toEqual(1);
-            mock.Expect.TestMethod.VerificationPointers[0]=function()
+            mock.Expects.TestMethod.ToBeCalled();
+            expect(mock.Expects.TestMethod.VerificationPointers.length).toEqual(1);
+            mock.Expects.TestMethod.VerificationPointers[0]=function()
             {
               verificationPointerCalled=true;
             };
@@ -41,9 +41,9 @@ describe("MockusJS Tests", function () {
             var errorMessage="verification error";
             var verificationPointerCalled=false;
             var mock=Mockus.Mock(TestType);
-            mock.Expect.TestMethod.ToBeCalled();
-            expect(mock.Expect.TestMethod.VerificationPointers.length).toEqual(1);
-            mock.Expect.TestMethod.VerificationPointers[0]=function()
+            mock.Expects.TestMethod.ToBeCalled();
+            expect(mock.Expects.TestMethod.VerificationPointers.length).toEqual(1);
+            mock.Expects.TestMethod.VerificationPointers[0]=function()
             {
               throw errorMessage;
             };

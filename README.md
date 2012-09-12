@@ -14,28 +14,42 @@ How it works?
 - Once we've created the mock, the we can perform expectations over it. We've got different expectation types:
 
   *ToBeCalled*  
-  **myMock.Expect.MyMethod.ToBeCalled();**  
+  **myMock.Expects.MyMethod.ToBeCalled();**  
   -or-  
-  **myMock.Expect.MyMethod.ToBeCalled(5);**  
+  **myMock.Expects.MyMethod.ToBeCalled(5);**  
   This expectation will setup a listener that will be aware of the times that the method of the expectation is called.
   If no parameter is sent, it will be check that is called 1 time. 
   
   *WithParams*  
-  **myMock.Expect.MyMethod.WithParams("param1","param2"...)**  
+  **myMock.Expects.MyMethod.WithParams("param1","param2"...)**  
   This expectation will setup a listener that will be aware of the parameters that are sent to the method of the expectation.
   Every expectation will be aware of a single call, so, for the first expectation we'll check the parameters of the first call, for the second expectation, the second call, and so on.
   
   When you want to setup a WithParams expectation but you are not sure about the parameters' values, you can setup a generic parameter, that will check only the type and not the value.
   You've got some options to do so:
   - It.IsAny(MyType)  
-  **myMock.Expect.MyMethod.WithParams(It.IsAny(MyType));**  
+  **myMock.Expects.MyMethod.WithParams(It.IsAny(MyType));**  
   This will check that the first parameter that will be passed to our method is an instance of MyType, but it will not check that instance itself.
   
   - It.IsAnyFunction()
   - It.IsAnyObject()
   - It.IsAnyString()
   - It.IsAnyNumber()
-    
+  
+  *Returns*  
+  **myMock.Expects.MyMethod.Returns("returnValue");**
+  This expectation will setup a listener that will return the desired value when mocked method is called.  
+  Expectations are executed in order, so if you want to perform some "Returns" expectations over a method, keep in mind that:  
+  
+  **myMock.Expects.MyMethod.Returns("returnValue1");**  
+  **myMock.Expects.MyMethod.Returns("returnValue2");**  
+     
+  First call to mocked method will return "returnValue1"  
+  Second call to mocked method will return "returnValue2"  
+  Third call to mocked method will NOT return anything  
+  
+  Returns also will throw an error when an expectation is not accomplished.
+      
 - Once we've set up the expectations and out method to be tested is called, is time to verify our mock. Easy:
   **myMock.VerifyAll();**
 
