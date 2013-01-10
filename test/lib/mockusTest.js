@@ -6,11 +6,11 @@ describe("MockusJS Tests", function () {
         it("should return a mock for the specified type", function () {
            var mock=Mockus.Mock(TestType);
            expect(mock.Expects).toBeDefined();
-        });
+        }); 
         it("should override methods' implementation to set notifiers", function () {
-            expect(new TestType().TestMethod.toString()).toEqual("function (){}");
+            expect(new TestType().TestMethod.toString()).toEqual((function(){}).toString());
             var mock=Mockus.Mock(TestType);
-            expect(mock.TestMethod.toString()).toNotEqual("function (){}");
+            expect(mock.TestMethod.toString()).toNotEqual((function(){}).toString());
         });
         it("should throw an exception when trying to override properties", function () {
             function TestTypeWithProperties(){
@@ -21,9 +21,9 @@ describe("MockusJS Tests", function () {
             expect(function(){Mockus.Mock(TestTypeWithProperties);}).toThrow("Property mocking not implemented yet: propertyName");
         });
         it("should override methods' implementation to set verifiers", function () {
-            expect(new TestType().TestMethod.toString()).toEqual("function (){}");
+            expect(new TestType().TestMethod.toString()).toEqual((function(){}).toString());
             var mock=Mockus.Mock(TestType);
-            expect(mock.Expects.TestMethod.toString()).toNotEqual("function (){}");
+            expect(mock.Expects.TestMethod.toString()).toNotEqual((function(){}).toString());
         });
         it("should verify all methods' expectations when VerifyAll is called", function () {
             var verificationPointerCalled=false;
