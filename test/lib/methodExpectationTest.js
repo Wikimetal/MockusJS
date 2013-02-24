@@ -20,7 +20,7 @@ describe("Method Expectation Tests", function () {
     });
     
     describe("public ToBeCalled",function(){
-        it("should throw an exception when the it has been already called",function(){
+        it("should throw an exception when the setup has been already performed",function(){
             methodExpectation.ToBeCalledsAlreadyInitiated=true;
             expect(function(){methodExpectation.ToBeCalled()}).toThrow("ToBeCalled over method "+methodName+" can only be defined once per test");
         });
@@ -206,6 +206,7 @@ describe("Method Expectation Tests", function () {
         it("should execute all the defined notification pointers with defined args",function(){
           var expectedArgs="expectedArgs";
           var notifiedPointers=0;
+          methodExpectation.expectedNotifications=1;
           methodExpectation.NotificationPointers.push(function(args){
             notifiedPointers++;
             expect(args).toEqual(expectedArgs);
@@ -216,6 +217,20 @@ describe("Method Expectation Tests", function () {
           });
           methodExpectation.Notify(expectedArgs);
           expect(notifiedPointers).toEqual(2);
+        });
+        it("should throw an exception when is called and no setup has been performed",function(){
+          expect(function(){methodExpectation.Notify()}).toThrow("Element: "+methodName+" has been called without a valid setup");
+        });
+        it("should throw an exception when is called more times than setups performed",function(){
+          methodExpectation.ToBeCalled();
+          methodExpectation.Notify()
+          expect(function(){methodExpectation.Notify()}).toThrow("Element: "+methodName+" has been called more times than setups performed");
+        });
+        it("should not throw an exception when is called more times than setups performed",function(){
+          methodExpectation.ToBeCalled(2);
+          methodExpectation.Notify();
+          methodExpectation.Notify();
+          expect(function(){methodExpectation.Notify()}).toThrow("Element: "+methodName+" has been called more times than setups performed");
         });
     });
     describe("public Verify",function(){
