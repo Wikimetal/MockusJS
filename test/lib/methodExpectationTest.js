@@ -307,5 +307,12 @@ describe("Method Expectation Tests", function () {
           expect(methodExpectation.Notify(["param3","param4"])).toEqual(returnValue2);
           methodExpectation.Verify();
         });
+        //Buggy case when returns must return false
+        it("should verify all setups in order. Testing expectation 3.2...",function(){
+          var returnValue1=false;
+          methodExpectation.WithParams("param1","param2").Returns(returnValue1);
+          expect(methodExpectation.Notify(["param1","param2"])).toEqual(returnValue1);
+          methodExpectation.Verify();
+        });
     });
 });
