@@ -246,6 +246,7 @@ describe("Method Expectation Tests", function () {
           expect(verifiedPointers).toEqual(2);
         });
     });
+    
     describe("integration tests",function(){
         it("should verify all setups in order. Testing expectation 1...",function(){
           methodExpectation.ToBeCalled(2).WithParams("param1","param2").Returns(10);
@@ -307,11 +308,18 @@ describe("Method Expectation Tests", function () {
           expect(methodExpectation.Notify(["param3","param4"])).toEqual(returnValue2);
           methodExpectation.Verify();
         });
-        //Buggy case when returns must return false
-        it("should verify all setups in order. Testing expectation 3.2...",function(){
+
+        it("Buggy case when returns must return false",function(){
           var returnValue1=false;
           methodExpectation.WithParams("param1","param2").Returns(returnValue1);
           expect(methodExpectation.Notify(["param1","param2"])).toEqual(returnValue1);
+          methodExpectation.Verify();
+        });
+
+        it("Buggy case when using Generic parameter multiple times in same Expectation",function(){
+          var returnValue1=false;
+          methodExpectation.WithParams("param1",It.IsAnyObject(),It.IsAnyString()).Returns(returnValue1);
+          expect(methodExpectation.Notify(["param1",new Object(), ""])).toEqual(returnValue1);
           methodExpectation.Verify();
         });
     });
