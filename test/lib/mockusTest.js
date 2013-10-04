@@ -8,7 +8,7 @@ describe("MockusJS Tests", function () {
            expect(mock.Expects).toBeDefined();
         }); 
         it("should override methods' implementation to set notifiers", function () {
-            expect(new TestType().TestMethod.toString()).toEqual((function(){}).toString());
+            expect(new TestType().TestMethod.toString()).toEqual(function(){}.toString());
             var mock=Mockus.Mock(TestType);
             expect(mock.TestMethod.toString()).toNotEqual((function(){}).toString());
         });
@@ -21,7 +21,7 @@ describe("MockusJS Tests", function () {
             expect(function(){Mockus.Mock(TestTypeWithProperties);}).toThrow("Property mocking not implemented yet: propertyName");
         });
         it("should override methods' implementation to set verifiers", function () {
-            expect(new TestType().TestMethod.toString()).toEqual((function(){}).toString());
+            expect(new TestType().TestMethod.toString()).toEqual(function(){}.toString());
             var mock=Mockus.Mock(TestType);
             expect(mock.Expects.TestMethod.toString()).toNotEqual((function(){}).toString());
         });
