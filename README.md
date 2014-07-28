@@ -36,6 +36,10 @@ How it works?
   - It.IsAnyString()
   - It.IsAnyNumber()
   
+  Additionally your can declare your parameter as It.IsStringifiedObject. In this case, given an object, it will be checked agains it's expectation in stringified mode. For example:
+  **myMock.Expects.MyMethod.WithParams(It.IsStringifiedObejct(new Date()));**  
+  This helps on testing values where it's instance has been created inside the method under test.
+  
   *Returns*  
   **myMock.Expects.MyMethod.Returns("returnValue");**  
   This expectation will setup a listener that will return the desired value when mocked method is called.  
@@ -66,4 +70,6 @@ Exceptions contain the whole information to allow you solve the problem. An exam
 - For more details. Please have a look to the tests inside /test/lib. There you'll have some nice Jasmine tests which will help you to understand how it works
 
 
-  
+/* MockusJS v1.0.1 */
+RELEASE NOTES: 
+  - Added It.IsStringifiedObject to be used as generic parameter

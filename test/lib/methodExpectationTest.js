@@ -175,6 +175,29 @@ describe("Method Expectation Tests", function () {
             expect(methodExpectation.VerificationPointers.length).toEqual(1);  
             expect(function(){methodExpectation.VerificationPointers[0]()}).toThrow("Invalid argument type. Argument 3 expected to be of type string but was TestType");
         });
+        it("should throw an exception when stringified parameter is not the same as spected",function(){
+            var date = new Date();
+            methodExpectation.WithParams("test1","test2",It.IsStringifiedObject(date));
+            expect(methodExpectation.NotificationPointers.length).toEqual(1);
+            function notify(){  
+              methodExpectation.NotificationPointers[0](arguments);
+            };
+            var testType = new TestType();
+            notify("test1","test2",testType);
+            expect(methodExpectation.VerificationPointers.length).toEqual(1);  
+            expect(function(){methodExpectation.VerificationPointers[0]()}).toThrow("Invalid argument value. Argument 3 expected to be " + JSON.stringify(date) + " but was " + JSON.stringify(testType));
+        });
+        it("should allow stringified parameters",function(){
+            var date = new Date();
+            methodExpectation.WithParams("test1","test2",It.IsStringifiedObject(date));
+            expect(methodExpectation.NotificationPointers.length).toEqual(1);
+            function notify(){  
+              methodExpectation.NotificationPointers[0](arguments);
+            };
+            notify("test1","test2",date);
+            expect(methodExpectation.VerificationPointers.length).toEqual(1);  
+            expect(function(){methodExpectation.VerificationPointers[0]()}).not.toThrow();
+        });
     });
     describe("public Returns",function(){
         it("should return expected value when notified",function(){
@@ -321,6 +344,24 @@ describe("Method Expectation Tests", function () {
           methodExpectation.WithParams("param1",It.IsAnyObject(),It.IsAnyString()).Returns(returnValue1);
           expect(methodExpectation.Notify(["param1",new Object(), ""])).toEqual(returnValue1);
           methodExpectation.Verify();
+        });
+        
+        it("should allow stringified gereneric parameter",function(){
+          var date = new Date();
+          var testType = new TestType();
+          testType.property = "property";
+          methodExpectation.ToBeCalled(1).WithParams(It.IsStringifiedObject(date),It.IsStringifiedObject(testType));
+          expect(function(){methodExpectation.Notify([date,testType])}).not.toThrow();
+          methodExpectation.Verify();
+        });
+        
+        it("should fail when stringified parameter does not match",function(){
+          var date = new Date();
+          var testType = new TestType();
+          testType.property = "property";
+          methodExpectation.ToBeCalled(1).WithParams(It.IsStringifiedObject(date),It.IsStringifiedObject(testType));
+          methodExpectation.Notify([date,new TestType()]);
+          expect(function(){methodExpectation.Verify()}).toThrow("Invalid argument value. Argument 2 expected to be {\"property\":\"property\"} but was {}");
         });
     });
 });

@@ -48,4 +48,17 @@ describe("Generic Parameter Tests", function () {
             expect(parameter.GetType()).toEqual("number");
         });
     });
+    describe("public IsStringifiedObject: ", function () {
+        it("should crash if JSON.stringify is not supported ", function () {
+            var bkupJsonStringify = JSON.stringify;
+            JSON.stringify = null;
+            expect(function(){GenericParameter.IsStringifiedObject(new Date())}).toThrow("JSON.stringify not supported in your browser. Please update your browser or add dependency JSON2 library (https://github.com/douglascrockford/JSON-js)");
+            JSON.stringify = bkupJsonStringify ;
+        });
+        it("should stringify value and setUp property", function () {
+            var date = new Date();
+            var parameter=GenericParameter.IsStringifiedObject(date);
+            expect(parameter.GetStringifiedValue()).toEqual(JSON.stringify(date));
+        });
+    });
 });
