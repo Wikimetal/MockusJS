@@ -37,8 +37,13 @@ How it works?
   - It.IsAnyNumber()
   
   Additionally your can declare your parameter as It.IsStringifiedObject. In this case, given an object, it will be checked agains it's expectation in stringified mode. For example:
-  **myMock.Expects.MyMethod.WithParams(It.IsStringifiedObejct(new Date()));**  
+  **myMock.Expects.MyMethod.WithParams(It.IsStringifiedObject(new Date()));**  
   This helps on testing values where it's instance has been created inside the method under test.
+  
+  Also your parameter can be declared as It.IsAnonymousFunctionThatContains. In this case, given an anonymous function, it will check that this function contains the string you provide. For example:
+  **function(){MyClass.MyStaticMethod(self);}**  
+  **myMock.Expects.MyMethod.WithParams(It.IsAnonymousFunctionThatContains("MyClass.MyStaticMethod(self);");**  
+  This helps on testing anonymous functions usually used on event handlers.
   
   *Returns*  
   **myMock.Expects.MyMethod.Returns("returnValue");**  
@@ -63,6 +68,7 @@ Exceptions contain the whole information to allow you solve the problem. An exam
 *Mock for component IEventManager: method AddEvent -> Times to be called not succeed. Expected 3 but was 2*  
 *Mock for component IEventManager: method AddEvent -> Invalid argument value. Argument 2 expected to be keydown but was keyup*  
 *Mock for component IEventManager: method AddEvent -> Invalid argument type. Argument 2 expected to be of type function but was string*
+*Mock for component IEventManager: method AddEvent -> Invalid argument type. Argument 3 expected to contain MyClass.MyStaticMethod(self); but was function(){AnotherClass.MyStaticMethod(self);}*
 
 *LIMITATIONS*
 - This version will not allow to mock types with properties, will work only with types with methods.

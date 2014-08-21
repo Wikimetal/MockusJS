@@ -61,4 +61,13 @@ describe("Generic Parameter Tests", function () {
             expect(parameter.GetStringifiedValue()).toEqual(JSON.stringify(date));
         });
     });
+    
+    describe("public IsAnonymousFunctionThatContains: ", function () {
+        it("should set 'function' as type", function () {
+            var expectedContent = "test";
+            var parameter = GenericParameter.IsAnonymousFunctionThatContains(expectedContent);
+            expect(parameter.GetType()).toEqual("function");
+            expect(parameter.ShouldContain()).toEqual(expectedContent);
+        });
+    });
 });
