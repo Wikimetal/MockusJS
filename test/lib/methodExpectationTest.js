@@ -200,7 +200,7 @@ describe("Method Expectation Tests", function () {
         });
         it("should throw an exception when expected to contain value is not found",function(){
             var anonymousFunction=function(){ var test=1;};
-            var expectedToContain="var test=2;";
+            var expectedToContain="function(){vartest=2;}";
             methodExpectation.WithParams("test1","test2",It.IsAnonymousFunctionThatContains(expectedToContain));
             expect(methodExpectation.NotificationPointers.length).toEqual(1);
             function notify(){  
@@ -212,7 +212,7 @@ describe("Method Expectation Tests", function () {
         });
         it("should allow anonymous functions with string comparison",function(){
             var anonymousFunction=function(){ var test=1;};
-            var expectedToContain="var test=1;";
+            var expectedToContain="function(){vartest=1;}";
             methodExpectation.WithParams("test1","test2",It.IsAnonymousFunctionThatContains(expectedToContain));
             expect(methodExpectation.NotificationPointers.length).toEqual(1);
             function notify(){  
@@ -390,7 +390,7 @@ describe("Method Expectation Tests", function () {
         
         it("should allow anonymous functions gereneric parameter string checking",function(){
           var anonymousFunction = function(){ var test=1; };
-          var expectedToContain = "var test=1;";
+          var expectedToContain = "function(){vartest=1;}";
           methodExpectation.ToBeCalled(1).WithParams(It.IsAnonymousFunctionThatContains(expectedToContain));
           expect(function(){methodExpectation.Notify([anonymousFunction])}).not.toThrow();
           methodExpectation.Verify();
@@ -398,7 +398,7 @@ describe("Method Expectation Tests", function () {
         
         it("should fail when expected to containe parameter does not match",function(){
           var anonymousFunction = function(){ var test=1; };
-          var expectedToContain = "var test=2;";
+          var expectedToContain = "function(){var test=2;}";
           methodExpectation.ToBeCalled(1).WithParams(It.IsAnonymousFunctionThatContains(expectedToContain));
           methodExpectation.Notify([anonymousFunction]);
           expect(function(){methodExpectation.Verify()}).toThrow("Invalid argument value. Argument 1 expected to contain " + expectedToContain + " but was " + anonymousFunction.toString());
